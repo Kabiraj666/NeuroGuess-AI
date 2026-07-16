@@ -245,9 +245,34 @@ def reset_telemetry():
             db.execute('DELETE FROM gameplay_logs')
             db.execute('DELETE FROM leaderboard')
             db.commit()
-        return jsonify({'status': 'SUCCESS', 'message': 'All persistent telemetry cache deleted.'})
+        return jsonify({
+            'status': 'SUCCESS',
+            'message': 'All persistent telemetry cache deleted.'
+        })
     except Exception as e:
-        return jsonify({'status': 'ERROR', 'error': str(e)}), 500
+        return jsonify({
+            'status': 'ERROR',
+            'error': str(e)
+        }), 500
+
+
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({
+        "status": "ONLINE",
+        "message": "NeuroGuess AI Backend is running successfully!",
+        "version": "1.0.0",
+        "available_routes": {
+            "GET /": "Backend status",
+            "POST /predict": "Predict win probability",
+            "POST /log": "Save gameplay telemetry",
+            "GET /history": "View gameplay history",
+            "GET /leaderboard": "View leaderboard",
+            "POST /leaderboard": "Add leaderboard entry",
+            "POST /reset_telemetry": "Reset telemetry database"
+        }
+    }), 200
+
 
 if __name__ == '__main__':
     # Try reloading model in case it was trained during app cycle
