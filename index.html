@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroGuess AI // Cognitive Calibration Core</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./styles/main.css">
+    
+    <!-- Chart.js (Local - works with file:// and http://) -->
+    <script src="./assets/chart.umd.min.js"></script>
+    
+    <!-- html2pdf.js (Local) -->
+    <script src="./assets/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+    <!-- Mouse Tracker Cursor Glow -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Operator Session Initialization Screen -->
+    <div id="loginOverlay">
+        <div class="scanner-container">
+            <div class="eyebrow" style="justify-content:center; margin-bottom: 20px;">Session Initialization</div>
+            <img src="./assets/logo.jpg" alt="Logo" style="height: 70px; border-radius: 8px; margin: 0 auto 15px; display: block; box-shadow: 0 0 20px rgba(255, 209, 102, 0.25);">
+            <h2>NEUROGUESS AI</h2>
+            <p id="authStatus">Awaiting security handshake scan...</p>
+            
+            <div class="scanner-ring" id="authScanner">
+                <span class="fingerprint-icon">🎯</span>
+                <div class="scan-line"></div>
+            </div>
+            
+            <div class="auth-bar-wrap">
+                <div id="authProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Operating System Boot Sequence Loader -->
+    <div id="boot">
+        <div class="boot-lines" id="bootLines"></div>
+        <div class="boot-bar-wrap">
+            <div class="boot-bar"></div>
+        </div>
+    </div>
+
+    <!-- Persistent Interactive Neural Background Canvas -->
+    <canvas id="bg"></canvas>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+
+
+
+    <div class="content-wrapper">
+        <!-- Navigation Header HUD -->
+        <header>
+            <div class="logo-section">
+                <img src="./assets/logo.jpg" alt="Logo" style="height: 30px; border-radius: 4px; box-shadow: 0 0 10px rgba(255, 209, 102, 0.15);">
+                <span>NEUROGUESS.AI</span>
+            </div>
+            
+            <nav class="nav-links">
+                <button class="nav-item active" id="navHome" data-section="home">HOME</button>
+                <button class="nav-item" id="navGame" data-section="game">TRAINING MODULE</button>
+                <button class="nav-item" id="navDashboard" data-section="analytics">PREDICTIVE DASHBOARD</button>
+                <button class="nav-item" id="navLeaderboard" data-section="leaderboard">OPERATOR REGISTRY</button>
+                <button class="nav-item" id="navDocs" data-section="docs">DOCUMENTATION</button>
+            </nav>
+            
+            <div class="hud-widgets">
+                <button id="themeToggle" class="nav-item" style="padding: 6px 12px; font-size: 10px; border-radius: 999px;">THEME: DARK</button>
+                <div class="badge" id="statusBadge">SYSTEM OFF</div>
+            </div>
+        </header>
+
+        <!-- Interactive Floating Developer Terminal Drawer -->
+        <div id="terminalConsole" class="hidden">
+            <div class="term-header">
+                <div class="term-title">NEUROGUESS_OS // KERNEL_CONSOLE</div>
+                <div class="term-ctrls">
+                    <button class="term-btn red" id="termCloseBtn"></button>
+                    <button class="term-btn yellow"></button>
+                    <button class="term-btn green"></button>
+                </div>
+            </div>
+            <div class="term-body" id="termOutput"></div>
+            <div class="term-input-row">
+                <span class="term-input-prompt">operator@nexus_core:~$</span>
+                <input type="text" id="termInput" autocomplete="off" placeholder="Enter systems command...">
+            </div>
+        </div>
+
+        <!-- Float terminal toggle badge -->
+        <button id="terminalToggle" title="Toggle Developer Shell (~)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; display: block;">
+                <polyline points="4 17 10 11 4 5"></polyline>
+                <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+        </button>
+
+        <!-- Main Viewport Context -->
+        <main>
+            <!-- 1. HOME SECTION -->
+            <section class="view-section active" id="home">
+                <div class="hero-layout">
+                    <div class="eyebrow" style="margin-bottom: 25px;">NEXUS OPERATING SYSTEM v4.11</div>
+                    <h1>AI Cognitive Prediction &<br><span class="highlight">Adaptive Learning Core</span></h1>
+                    <p>A B.Tech CSE (AI & ML) Major Project created by Kushal Kabiraj, simulating heuristic human-AI prediction loops, Bayesian search intervals, and telemetry analytics visualization.</p>
+                    <div class="hero-ctas">
+                        <button class="btn primary" onclick="document.getElementById('navGame').click()">Initialize Training Core</button>
+                        <button class="btn ghost" onclick="document.getElementById('navDocs').click()">Review Technical Docs</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. TRAINING MODULE SECTION -->
+            <section class="view-section" id="game">
+                <div class="section-head">
+                    <h1>Neural <span>Calibration Drill</span></h1>
+                    <div class="section-meta">SYS.M01 / DRILL</div>
+                </div>
+
+                <!-- Game Step 1: Config select panel -->
+                <div class="panel reveal-on-scroll" id="configCard">
+                    <div class="eyebrow">Initialize Core Parameters</div>
+                    <h2 style="font-family: var(--font-display); font-size: 22px; margin-bottom: 8px;">Select Calibration Level</h2>
+                    <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 24px;">Configure range boundaries and attempt threshold budgets for the AI cognitive calibration drill.</p>
+                    
+                    <div class="diff-grid">
+                        <!-- Easy -->
+                        <div class="diff-card easy" data-diff="easy">
+                            <div class="diff-info">
+                                <div class="diff-name">Level 1: Basic Calibration</div>
+                                <div class="diff-desc">Heuristic check within tighter interval spaces. Optimal baseline setup.</div>
+                            </div>
+                            <div class="diff-meta">
+                                <div>1 – 50 Range</div>
+                                <div style="color:var(--neon-green)">10 Attempts Allowed</div>
+                            </div>
+                        </div>
+
+                        <!-- Medium -->
+                        <div class="diff-card medium" data-diff="medium">
+                            <div class="diff-info">
+                                <div class="diff-name">Level 2: Deep Prediction Engine</div>
+                                <div class="diff-desc">Standard neural entropy matching matrix. Standard verification level.</div>
+                            </div>
+                            <div class="diff-meta">
+                                <div>1 – 100 Range</div>
+                                <div style="color:var(--neon-cyan)">8 Attempts Allowed</div>
+                            </div>
+                        </div>
+
+                        <!-- Hard -->
+                        <div class="diff-card hard" data-diff="hard">
+                            <div class="diff-info">
+                                <div class="diff-name">Level 3: Quantum Intelligence Mode</div>
+                                <div class="diff-desc">Highly complex cognitive target mapping. Narrow success threshold.</div>
+                            </div>
+                            <div class="diff-meta">
+                                <div>1 – 500 Range</div>
+                                <div style="color:var(--neon-magenta)">6 Attempts Allowed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Step 2: Main Active Game Loop -->
+                <div class="panel hidden reveal-on-scroll" id="gameCard">
+                    <div class="game-grid">
+                        <!-- Left col: Gauge input controls -->
+                        <div>
+                            <div class="eyebrow" id="levelIndicatorLabel">DRILL ACTIVE</div>
+                            <h2 id="calibrationRangeTitle" style="font-family: var(--font-display); font-size: 22px; margin-bottom: 20px;">Guess between 1–100</h2>
+                            
+                            <div class="gauge-area">
+                                <div class="gauge-wrap">
+                                    <svg class="gauge-svg" viewBox="0 0 200 200">
+                                        <circle class="gauge-ring-outer" cx="100" cy="100" r="90"></circle>
+                                        <circle class="gauge-progress" id="gaugeProgressArc" cx="100" cy="100" r="83" stroke="var(--neon-cyan)" stroke-width="4" fill="none" stroke-dasharray="521.5" stroke-dashoffset="521.5" style="transition: stroke-dashoffset 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); transform: rotate(-90deg); transform-origin: 50% 50%; stroke-linecap: round; filter: drop-shadow(0 0 4px var(--neon-cyan));"></circle>
+                                        <circle class="gauge-ring-inner" cx="100" cy="100" r="76"></circle>
+                                    </svg>
+                                    <div class="gauge-core">
+                                        <div class="gauge-pulse-el"></div>
+                                        <div class="indicator-text" id="dialGaugeVal">?</div>
+                                        <div class="indicator-label" id="dialGaugeHint">awaiting synapse</div>
+                                    </div>
+                                    <div class="gauge-bound lo" id="gaugeMin">1</div>
+                                    <div class="gauge-bound hi" id="gaugeMax">100</div>
+                                </div>
+                            </div>
+
+                            <div class="guess-history" id="historyRow"></div>
+
+                            <div class="input-row">
+                                <input type="number" id="guessInput" placeholder="Enter predicted coordinate..." autocomplete="off">
+                                <button class="btn primary" id="guessBtn">Sync Guess</button>
+                            </div>
+
+                            <button class="btn ghost" id="abortBtn" style="width:100%; border-color: rgba(255,47,110,0.3); color: var(--neon-magenta);">Abort Training Calibration</button>
+                        </div>
+
+                        <!-- Right col: Heuristic AI Engine reports -->
+                        <div style="display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
+                            <!-- Smart Hint Box -->
+                            <div class="hint-container" id="hintContainerBox">
+                                <div class="hint-header">
+                                    <div class="hint-status">
+                                        <span id="hintStatusDot" class="status-dot pulse yellow"></span>
+                                        COGNITIVE HINT GENERATOR
+                                    </div>
+                                    <button class="btn primary" id="hintTriggerBtn" style="padding: 6px 12px; font-size: 9.5px; border-radius: 6px;" disabled>Awaiting Guess</button>
+                                </div>
+                                <p class="hint-text" id="smartHintBoxText">Telemetry idle. Submit at least one guess coordinate to activate Bayesian inference models.</p>
+                                <div class="hint-metrics">
+                                    <span>HINTS LEFT: <b id="hintsLeftCounter">--</b></span>
+                                    <span>WIN PROBABILITY: <b id="smartHintConfidence">--</b></span>
+                                    <span>DIRECTION: <b id="smartHintDirection">--</b></span>
+                                </div>
+                            </div>
+
+                            <!-- Live logs -->
+                            <div style="flex:1; display:flex; flex-direction:column;">
+                                <div class="eyebrow" style="margin-bottom:8px;">AI Neural Processing Logs</div>
+                                <div class="ai-processing-box" id="aiLogs"></div>
+                            </div>
+
+                            <!-- Live dashboard metrics -->
+                            <div style="display:flex; justify-content:space-between; padding-top:10px; border-top:1px solid var(--panel-border); font-family:var(--font-mono); font-size:11px; color:var(--text-dim);">
+                                <span>ATTEMPTS USED: <b id="attemptsLeftLabel" style="color:var(--text-primary)">--</b>/<b id="attemptsMaxLabel" style="color:var(--text-primary)">--</b></span>
+                                <span>MODEL WIN PROBABILITY: <b id="liveConfidenceGauge" style="color:var(--neon-cyan)">--</b></span>
+                                <span>LIMIT BOUNDS: <b id="rangeLimitsLabel" style="color:var(--text-primary)">--</b></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Step 3: Run report analytics dashboard card -->
+                <div class="panel hidden reveal-on-scroll" id="resultCard">
+                    <div class="result-display">
+                        <div class="result-target-label" id="resultTitleLabel">TARGET RETRIEVED</div>
+                        <div class="result-target-value" id="resultTargetVal">42</div>
+                        <div class="result-verdict" id="resultVerdictText">COGNITIVE MATRIX BALANCED PREDICTIVELY</div>
+                        
+                        <div class="result-metrics-grid">
+                            <div class="result-metric-card">
+                                <div class="val" id="resScore">0</div>
+                                <div class="lbl">Calibration Score</div>
+                            </div>
+                            <div class="result-metric-card">
+                                <div class="val" id="resTries">0</div>
+                                <div class="lbl">Tries Utilized</div>
+                            </div>
+                            <div class="result-metric-card">
+                                <div class="val" id="resDiff">--</div>
+                                <div class="lbl">Difficulty Index</div>
+                            </div>
+                        </div>
+
+                        <!-- Username logger -->
+                        <div class="callsign-box id-row" id="callsignSaveRow">
+                            <input type="text" id="callsignInput" placeholder="Enter callsign to log profile..." maxlength="16">
+                            <button class="btn primary" id="saveBtn">Log Result</button>
+                        </div>
+
+                        <!-- Main CTAs -->
+                        <div style="display:flex; gap:12px; max-width:440px; margin: 0 auto 30px;">
+                            <button class="btn primary" id="playAgainBtn" style="flex:1">Calibrate Again</button>
+                            <button class="btn ghost" id="backToMenuBtn" style="flex:1">Configuration Menu</button>
+                            <button class="btn ghost" id="printReportBtn" style="border-color: rgba(57, 255, 157, 0.3); color: var(--neon-green)">Export Report (PDF)</button>
+                        </div>
+
+                        <!-- Full PDF print section frame -->
+                        <div class="report-card-container" id="reportCard">
+                            <div class="report-card-header">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <img src="./assets/logo.jpg" alt="Logo" style="height: 32px; border-radius: 4px;">
+                                    <div class="report-title-label">NEUROGUESS AI - SYSTEM AUDIT REPORT</div>
+                                </div>
+                                <div class="report-date" id="rptDate">--</div>
+                            </div>
+                            <div class="report-score-block">
+                                <div class="report-scores-list">
+                                    <div class="report-score-bar-row" id="barQuality">
+                                        <div class="report-score-bar-label">
+                                            <span>DECISION ACCURACY</span>
+                                            <span><b class="score-bar-val">--</b></span>
+                                        </div>
+                                        <div class="report-score-bar-bg">
+                                            <div class="report-score-bar-fill"></div>
+                                        </div>
+                                    </div>
+                                    <div class="report-score-bar-row" id="barPattern">
+                                        <div class="report-score-bar-label">
+                                            <span>PATTERN RECOGNITION</span>
+                                            <span><b class="score-bar-val">--</b></span>
+                                        </div>
+                                        <div class="report-score-bar-bg">
+                                            <div class="report-score-bar-fill"></div>
+                                        </div>
+                                    </div>
+                                    <div class="report-score-bar-row" id="barEfficiency">
+                                        <div class="report-score-bar-label">
+                                            <span>SEARCH SPACE EFFICIENCY</span>
+                                            <span><b class="score-bar-val">--</b></span>
+                                        </div>
+                                        <div class="report-score-bar-bg">
+                                            <div class="report-score-bar-fill"></div>
+                                        </div>
+                                    </div>
+                                    <div class="report-score-bar-row" id="barStability">
+                                        <div class="report-score-bar-label">
+                                            <span>PREDICTION STABILITY</span>
+                                            <span><b class="score-bar-val">--</b></span>
+                                        </div>
+                                        <div class="report-score-bar-bg">
+                                            <div class="report-score-bar-fill"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="report-evaluation-summary">
+                                    <div class="report-summary-title">COGNITIVE SUMMARY EVALUATION</div>
+                                    <p class="report-summary-text" id="rptEvaluationSummaryText">--</p>
+                                    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px; font-family: var(--font-mono); font-size: 10px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(57, 255, 157, 0.15); background: rgba(57, 255, 157, 0.03); padding: 8px 12px; border-radius: 8px;">
+                                            <span style="color: var(--text-muted)">FINAL COGNITIVE RATING</span>
+                                            <span id="rptRating" style="color: var(--neon-green); font-weight: 600;">--</span>
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(43, 227, 255, 0.15); background: rgba(43, 227, 255, 0.03); padding: 8px 12px; border-radius: 8px;">
+                                            <span style="color: var(--text-muted)">CALIBRATION SCORE LOGGED</span>
+                                            <span id="rptScore" style="color: var(--neon-cyan); font-weight: 600;">--</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. PREDICTIVE DASHBOARD & ANALYTICS SECTION -->
+            <section class="view-section" id="analytics">
+                <div class="section-head">
+                    <h1>Predictive <span>Telemetry Dashboard</span></h1>
+                    <div class="section-meta">SYS.M02 / ANALYTICS</div>
+                </div>
+
+                <div class="analytics-dashboard-grid">
+                    <!-- Left Column: User pattern profile cards -->
+                    <div class="panel ml-profile-card reveal-on-scroll" id="mlProfileCard">
+                        <div class="eyebrow">Neural Profiler Output</div>
+                        <h2 style="font-family: var(--font-display); font-size: 20px; margin-bottom: 8px;">Adaptive Model Summary</h2>
+                        <p style="color: var(--text-muted); font-size: 13px;">AI behavioral heuristics parsed from local telemetry storage databases.</p>
+                        
+                        <div class="profile-stats-list">
+                            <div class="profile-stat-row">
+                                <div class="profile-stat-label">Total Calibration Runs</div>
+                                <div class="profile-stat-val" id="statGames">0</div>
+                            </div>
+                            <div class="profile-stat-row">
+                                <div class="profile-stat-label">Win Stabilization Rate</div>
+                                <div class="profile-stat-val highlight" id="statWinRate">0%</div>
+                            </div>
+                            <div class="profile-stat-row">
+                                <div class="profile-stat-label">Mean Calibration Score</div>
+                                <div class="profile-stat-val" id="statAvgScore">0</div>
+                            </div>
+                            <div class="profile-stat-row">
+                                <div class="profile-stat-label">Mean Attempts Per Session</div>
+                                <div class="profile-stat-val" id="statAvgTries">0</div>
+                            </div>
+                            <div class="profile-stat-row">
+                                <div class="profile-stat-label">Mean Response Speed</div>
+                                <div class="profile-stat-val" id="statAvgSpeed">0s</div>
+                            </div>
+                            <div class="profile-stat-row">
+                                <div class="profile-stat-label">Preferred Parameter Level</div>
+                                <div class="profile-stat-val" id="statFavDiff">N/A</div>
+                            </div>
+                            <div class="profile-stat-row" style="flex-direction:column; align-items:flex-start; gap:6px;">
+                                <div class="profile-stat-label">Primary Input Pattern Bias</div>
+                                <div class="profile-stat-val" id="statBias" style="color: var(--neon-magenta); font-size: 12.5px; font-family: var(--font-mono);">Evaluating...</div>
+                            </div>
+                            <div class="profile-stat-row" style="flex-direction:column; align-items:flex-start; gap:6px;">
+                                <div class="profile-stat-label">Model Learning Rate (Efficiency Change)</div>
+                                <div class="profile-stat-val" id="statLearningRate" style="color: var(--neon-cyan); font-size: 12.5px; font-family: var(--font-mono);">Evaluating...</div>
+                            </div>
+                            <div class="profile-stat-row">
+                                <div class="profile-stat-label">System Neuro-Rating</div>
+                                <div class="profile-stat-val" id="statNeuroRating" style="color: var(--neon-green); font-weight:700">0/100</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Graphs visual layout grid -->
+                    <div class="charts-grid">
+                        <!-- Chart 1 -->
+                        <div class="panel chart-card reveal-on-scroll reveal-delay-1">
+                            <div class="chart-card-title">SEARCH PRECISION MATRIX (%)</div>
+                            <div class="chart-canvas-wrap">
+                                <canvas id="accuracyLineChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Chart 2 -->
+                        <div class="panel chart-card reveal-on-scroll reveal-delay-2">
+                            <div class="chart-card-title">SEARCH STEPS CALIBRATION (USER VS. AI)</div>
+                            <div class="chart-canvas-wrap">
+                                <canvas id="attemptsBarChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 3 -->
+                        <div class="panel chart-card reveal-on-scroll reveal-delay-3">
+                            <div class="chart-card-title">ACQUISITION RATIO (WIN / LOSS)</div>
+                            <div class="chart-canvas-wrap">
+                                <canvas id="winRateDoughnutChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 4 -->
+                        <div class="panel chart-card reveal-on-scroll reveal-delay-4">
+                            <div class="chart-card-title">OPERATOR NEURAL PROFILE (RADAR)</div>
+                            <div class="chart-canvas-wrap">
+                                <canvas id="cognitiveRadarChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Expandable Match Logs History Panel -->
+                <div class="panel reveal-on-scroll" style="margin-top: 30px;">
+                    <div class="eyebrow">Match Registry Archive</div>
+                    <h2 style="font-family: var(--font-display); font-size: 20px; margin-bottom: 12px;">Operational Execution Logs</h2>
+                    <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Click on any log record to expand the step-by-step guess coordinates database.</p>
+                    <div id="matchLogsList" style="display:flex; flex-direction:column; gap:10px; font-family: var(--font-mono); font-size:12px;">
+                        <!-- Populated dynamically by app.js -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. OPERATOR REGISTRY SECTION -->
+            <section class="view-section" id="leaderboard">
+                <div class="section-head">
+                    <h1>Operator <span>Calibration Registry</span></h1>
+                    <div class="section-meta">SYS.M03 / REGISTRY</div>
+                </div>
+
+                <div class="panel leaderboard-container reveal-on-scroll">
+                    <div class="eyebrow" style="margin-bottom:20px;">Top System Calibration Scores</div>
+                    <div class="lb-list" id="leaderboardList"></div>
+                </div>
+            </section>
+
+            <!-- 5. DOCUMENTATION & ABOUT SECTION -->
+            <section class="view-section" id="docs">
+                <div class="section-head">
+                    <h1>Technical <span>System documentation</span></h1>
+                    <div class="section-meta">SYS.M04 / DOCS</div>
+                </div>
+
+                <div class="docs-layout">
+                    <!-- Nav side links column -->
+                    <div class="docs-sidebar">
+                        <a href="#doc-overview" class="docs-side-link active">1. Project Overview</a>
+                        <a href="#doc-ai" class="docs-side-link">2. AI/ML Engineering Concepts</a>
+                        <a href="#doc-architecture" class="docs-side-link">3. Architecture Diagram</a>
+                        <a href="#doc-team" class="docs-side-link">4. Team Credentials</a>
+                    </div>
+
+                    <!-- Main documentation content scroll area -->
+                    <div class="docs-content">
+                        <!-- Overview -->
+                        <div class="docs-section reveal-on-scroll" id="doc-overview">
+                            <h2>Project Overview</h2>
+                            <p><b>NeuroGuess AI</b> is an interactive human-in-the-loop prediction simulator designed to calibrate human decision boundaries against randomized mathematical systems. Styled as a futuristic operating system dashboard, the project represents a practical experiment in Human-AI Interaction, telemetry pattern modeling, and behavioral analytics mapping.</p>
+                            <p>The system records real-time input offset deviations, calculates binary bounds reduction ratios, and visualizes individual decision paths using responsive web widgets.</p>
+                        </div>
+
+                        <!-- Heuristics & Mathematics concepts -->
+                        <div class="docs-section reveal-on-scroll" id="doc-ai">
+                            <h2>AI/ML Engineering Concepts</h2>
+                            <p>This B.Tech CSE (AI & ML) major project implements a real-world predictive ML pipeline combined with client-server data architecture:</p>
+                            <ul>
+                                <li>
+                                    <b>Heuristic Binary Partitioning:</b> 
+                                    The active drill relies on a binary search bounds minimization tree. Every input filters search space entropy by half at peak efficiency:
+                                    <div class="docs-math-box">Optimal Attempts = ⌈log₂(Range Max - Range Min + 1)⌉</div>
+                                </li>
+                                <li>
+                                    <b>Supervised Machine Learning Classifier:</b>
+                                    Predicts the probability of winning the current calibration run based on real-time features. We trained a <b>Logistic Regression Model</b> (scikit-learn) with balanced class weights using simulated gameplay decision paths.
+                                </li>
+                                <li>
+                                    <b>Feature Engineering Pipeline:</b>
+                                    The model processes 5 custom features at inference:
+                                    <div class="docs-feature-list">
+                                        1. Normalized Distance = |Guess - Target| / InitialRange<br>
+                                        2. Attempts Remaining Ratio = TriesLeft / MaxTries<br>
+                                        3. Sequence Index = Current Guess Number<br>
+                                        4. Boundary Entropy Reduction = CurrentRange / InitialRange<br>
+                                        5. Direction Consistency (Verification of player adhering to feedback)
+                                    </div>
+                                </li>
+                                <li>
+                                    <b>Client-Server Telemetry Database:</b>
+                                    All gameplay decision states are logged via an HTTP POST request to a Flask backend, saving records to a SQLite database. This creates a data-collection loop that expands the training dataset dynamically over sessions.
+                                </li>
+                                <li>
+                                    <b>Explainable AI (XAI) & Print Audits:</b>
+                                    Outputs live calculation logs to demystify mathematical boundary adjustments in real-time, matching modern regulatory principles of explainability.
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Project Architecture -->
+                        <div class="docs-section reveal-on-scroll" id="doc-architecture">
+                            <h2>Architecture Diagram</h2>
+                            <p>The structural composition follows a client-server Model-View-Controller (MVC) architectural design system: </p>
+                            <div class="docs-architecture-diagram">[USER INPUT & DEV TERMINAL]
+             |
+             v
+   [ui.js] (View Handler)
+             ^
+             | (Event Sync)
+             v
+ [app.js] (Central Controller)
+  /          |          \
+ /           |           \
+v            v            v
+[ai.js] (ML Client) [charts.js] [storage.js] (Local Cache)
+      |                         |
+      | (HTTP POST /predict)    | (Background Sync)
+      v                         v
+================== Flask API Backend ==================
+|                                                     |
+|  [/predict] ----> [Random Forest ML Inference]      |
+|                      (model.pkl / scaler.pkl)       |
+|                                                     |
+|  [/log] / [/leaderboard] ----> [SQLite Database]    |
+|                                   (telemetry.db)    |
+=======================================================</div>
+                        </div>
+
+                        <!-- Team credits card list -->
+                        <div class="docs-section reveal-on-scroll" id="doc-team">
+                            <h2>Project Developer</h2>
+                            <p>Designed and built for CSE Major Project review by 3rd Year AI & ML engineering undergraduate.</p>
+                            
+                            <div class="team-grid" style="grid-template-columns: 1fr;">
+                                <div class="team-card">
+                                    <h3>Kushal Kabiraj</h3>
+                                    <div class="role">3rd Year B.Tech CSE (AI & ML) Student</div>
+                                    <p class="detail">Implemented supervised machine learning models (Random Forest), client-server database persistence, telemetry tracking patterns, and responsive dashboard analytics widgets.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer style="text-align: center; padding: 40px 20px; font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); border-top: 1px solid var(--panel-border); margin-top: auto;">
+            © 2026 NEUROGUESS AI CORE — CREATED BY KUSHAL KABIRAJ — SECURED BY NEXUS.OS DATA PROTOCOLS
+        </footer>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" style="position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 1000; pointer-events: none; display: flex; flex-direction: column; align-items: center; gap: 8px;"></div>
+
+    <!-- Application Scripts (Loaded in dependency order) -->
+    <script src="./scripts/audio.js"></script>
+    <script src="./scripts/storage.js"></script>
+    <script src="./scripts/ai.js"></script>
+    <script src="./scripts/charts.js"></script>
+    <script src="./scripts/ui.js"></script>
+    <script src="./scripts/app.js"></script>
+</body>
+</html>
