@@ -208,7 +208,7 @@
                         </div>
 
                         <!-- Right col: Heuristic AI Engine reports -->
-                        <div style="display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
+                        <div class="game-loop-right-col" style="display:flex; flex-direction:column; justify-content:space-between; gap:20px;">
                             <!-- Smart Hint Box -->
                             <div class="hint-container" id="hintContainerBox">
                                 <div class="hint-header">
@@ -233,7 +233,7 @@
                             </div>
 
                             <!-- Live dashboard metrics -->
-                            <div style="display:flex; justify-content:space-between; padding-top:10px; border-top:1px solid var(--panel-border); font-family:var(--font-mono); font-size:11px; color:var(--text-dim);">
+                            <div class="live-metrics-footer" style="display:flex; justify-content:space-between; padding-top:10px; border-top:1px solid var(--panel-border); font-family:var(--font-mono); font-size:11px; color:var(--text-dim);">
                                 <span>ATTEMPTS USED: <b id="attemptsLeftLabel" style="color:var(--text-primary)">--</b>/<b id="attemptsMaxLabel" style="color:var(--text-primary)">--</b></span>
                                 <span>MODEL WIN PROBABILITY: <b id="liveConfidenceGauge" style="color:var(--neon-cyan)">--</b></span>
                                 <span>LIMIT BOUNDS: <b id="rangeLimitsLabel" style="color:var(--text-primary)">--</b></span>
@@ -271,7 +271,7 @@
                         </div>
 
                         <!-- Main CTAs -->
-                        <div style="display:flex; gap:12px; max-width:440px; margin: 0 auto 30px;">
+                        <div class="result-ctas" style="display:flex; gap:12px; max-width:440px; margin: 0 auto 30px;">
                             <button class="btn primary" id="playAgainBtn" style="flex:1">Calibrate Again</button>
                             <button class="btn ghost" id="backToMenuBtn" style="flex:1">Configuration Menu</button>
                             <button class="btn ghost" id="printReportBtn" style="border-color: rgba(57, 255, 157, 0.3); color: var(--neon-green)">Export Report (PDF)</button>
