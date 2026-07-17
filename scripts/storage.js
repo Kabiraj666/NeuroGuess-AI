@@ -9,7 +9,7 @@ const STORAGE_KEYS = {
     ML_PROFILE: 'neuroguess_ml_profile'
 };
 
-const BACKEND_URL = 'http://localhost:5000';
+// BACKEND_URL is defined in scripts/config.js (loaded before this file)
 
 const StorageManager = {
     /**

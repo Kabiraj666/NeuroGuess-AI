@@ -67,9 +67,11 @@ NeuroGuess-AI
 │   ├── model.pkl
 │   ├── scaler.pkl
 │   ├── telemetry.db
-│   └── requirements.txt
+│   ├── requirements.txt
+│   └── Procfile
 │
 ├── scripts
+│   ├── config.js
 │   ├── ai.js
 │   ├── app.js
 │   ├── audio.js
@@ -81,6 +83,8 @@ NeuroGuess-AI
 │   └── main.css
 │
 ├── index.html
+├── render.yaml
+├── .gitignore
 └── README.md
 ```
 
@@ -114,7 +118,48 @@ python backend/app.py
 
 ### 5. Launch the game
 
-Open **index.html** in your browser.
+Open **index.html** in your browser. By default `scripts/config.js` points the frontend at `http://localhost:5000` when running locally.
+
+
+
+## ☁️ Deploying to Render
+
+This repo includes a `render.yaml` Blueprint that deploys two services:
+
+- **neuroguess-ai-backend** — the Flask API (`backend/`), run with `gunicorn`
+- **neuroguess-ai-frontend** — the static site (`index.html`, `scripts/`, `styles/`, `assets/`)
+
+### Steps
+
+1. Push this repo to GitHub (see below).
+2. On [Render](https://dashboard.render.com), click **New +** → **Blueprint**, and select this repository. Render will read `render.yaml` and create both services automatically.
+3. Once the backend deploys, copy its URL (e.g. `https://neuroguess-ai-backend.onrender.com`).
+4. Open `scripts/config.js` and replace the placeholder URL with your backend's real URL:
+   ```js
+   return 'https://neuroguess-ai-backend.onrender.com';
+   ```
+5. Commit and push that change — the frontend service will redeploy automatically and start talking to your live backend.
+
+> Note: on Render's free plan, the backend spins down after inactivity, so the first `/predict` request after idling may take a few seconds while it wakes up. The frontend already falls back to a local heuristic if the API is briefly unreachable.
+
+### Pushing this project to GitHub
+
+```bash
+git add .
+git commit -m "Prepare project for GitHub and Render"
+git push origin main
+```
+
+If you're starting fresh (no existing remote):
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/<your-username>/<your-repo>.git
+git push -u origin main
+```
 
 
 
